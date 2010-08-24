@@ -1,0 +1,43 @@
+{% extends "account/setting/base.html" %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+
+{% block account_main %}
+	<h2>我的个人设置</h2>
+	
+	{{_menu('email')}}
+	
+	<div class="M20">
+			<form action="" method="post">
+				{% if form.is_valid() %}
+				  <div class="complete">电子邮件更改完成</div>
+				  <script>Web.slideT_timeout('.complete');</script>
+				{% endif %}
+				{{csrf_token()}}
+				<table class="TableForm">
+		      <tr>
+				        <th>密码：</th>
+				        <td class="t">{{form.password}}
+				        	{% if form.password.errors %}<div class="formError">{{ form.password.errors.as_text() }}</div>{% endif %}
+				          <div class="formHelp">输入你现在使用的登录密码</div></td>
+				      </tr>
+				      <tr>
+				        <th>原始邮件地址：</th>
+				        <td class="t">{{form.old_email}}
+				        	{% if form.old_email.errors %}<div class="formError">{{ form.old_email.errors.as_text() }}</div>{% endif %}
+				          <div class="formHelp">请填入你现在帐户所绑定的邮件地址</div></td>
+				      </tr>
+				      <tr>
+				        <th>新邮件地址：</th>
+				        <td class="t">{{form.new_email}}
+				        	{% if form.new_email.errors %}<div class="formError">{{ form.new_email.errors.as_text() }}</div>{% endif %}
+				          <div class="formHelp">填入新的邮件地址</div></td>
+				      </tr>
+		      <tr>
+		        <td></td>
+		        <td><button type="submit">保存</button></td>
+		      </tr>
+		    </table>
+			</form>
+	</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "account/base.html" %}
+{% block title %}我收藏的小说 - 个人中心{% endblock %}
+
+
+{% block account_main %}
+	<h2>我收藏的小说</h2>
+	
+	<div class="bookReadPointList">
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<th width="120">类别</th>
+				<th>小说名</th>
+				<th width="100">作者</th>
+				<th width="140">收藏于</th>
+				<th width="40"></th>
+			</tr>
+			{% for b in books.object_list -%}
+			<tr>
+				<td>{{b.book.subarea.label}} / {{b.book.category.label}}</td>
+				<td class="title"><a href="/book/{{b.book.id}}/">{{b.book.title}}</a></td>
+				<td><a href="/search/book/{{b.book.author_name|urlencode}}/" target="_blank">{{b.book.author_name}}</a></td>
+				<td>{{b.created_at|localize}}</td>
+				<td><a href="#" onclick="Web.action('book-delete_favorite','确定要删除本条收藏吗？',{id:{{b.id}}},Web.relocation);return false;">删除</a></td>
+			</tr>
+			{%- else -%}
+			<tr>
+				<td colspan="5"><div class="NOSET">-- 你没有收藏任何小说 --</div></td>
+			</tr>
+			{%- endfor %}
+		</table>
+	</div>
+	
+{% endblock %}

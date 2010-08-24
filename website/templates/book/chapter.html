@@ -1,0 +1,65 @@
+{% import '_macro/html.html' as html -%}
+{% import '_macro/site.html' as site with context -%}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>《{{book.title}}》 - {{chapter.title}}</title>
+<meta name="title" content="{{book.title}}_{{chapter.title}}" />
+<meta name="keywords" content="{{chapter.title}}" />
+{{html.css_base('book_chapter')}}{{html.js_base('jquery.fontsize','book')}}
+</head>
+<body>
+	<div class="wrap">
+		<div class="bookChapterOption">
+			<div class="color"><span id="chapter_set_fontsize"></span></div>
+			<div class="account">
+				{% if request.user.is_authenticated() -%}
+					{% if request.user.book_auto_save_point -%}
+						已开启自动保存阅读记录
+					{%- else -%}
+						<a href="#" onclick="Web.action2('book-save_point',{chapter_id:{{chapter.id}}});return false;">记录本章为已读</a>
+					{%- endif %}
+					&nbsp; &nbsp; 
+					用户：{{request.user.username}} <a href="/my/">进入会员中心</a>
+						<a href="/my/logout/" class="href_logout">退出</a>
+				{%- else -%}
+					<a href="/my/login/" class="href_login">登陆</a> | <a href="/my/register/">注册</a>
+				{%- endif %}
+			</div>
+		</div>
+		<div class="bookChapterTtile">
+			<h1><a href="/book/{{book.id}}/">《{{book.title}}》</a></h1>
+			<h3>第{{chapter.vol_number}}卷 - {{chapter.title}}</h3>
+			<p>作者：<a href="/search/book/{{book.author_name|urlencode}}/" target="_blank">{{book.author_name}}</a>
+				&nbsp; &nbsp; 本章字数：{{chapter.length|intcomma}}</p>
+		</div>
+		<div class="bookChapterContent">
+			<p>{{chapter.content|replace('\n','</p>\n<p>')}}</p>
+		</div>
+		<div class="bookChapterFooter">
+			{% if prev_chapter -%}
+				<a href="/book/chapter/{{prev_chapter.id}}/">上一章：{{prev_chapter.title}}</a>
+			{%- else -%}
+				上一章：无
+			{%- endif %}
+			&nbsp; &nbsp;
+			<a href="/book/{{book.id}}/">返回目录</a>
+			&nbsp; &nbsp;
+			{% if next_chapter -%}
+				<a href="/book/chapter/{{next_chapter.id}}/">下一章：{{next_chapter.title}}</a>
+			{%- else -%}
+				下一章：无
+			{%- endif %}
+		</div>
+		<script type="text/javascript"><!--
+			$('#chapter_set_fontsize').fontsize('.bookChapterContent');
+			Book.stat({{book.id}});
+			{% if request.user.is_authenticated() and request.user.book_auto_save_point -%}
+			Book.savePoint({{chapter.id}});
+			{%- endif %}
+		--></script>
+		{{site.footer()}}
+	</div>
+</body>
+</html>

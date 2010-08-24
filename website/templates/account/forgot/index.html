@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+{% block title %}找回密码{% endblock %}
+
+
+{% block main -%}
+	{{site.menu()}}
+	<div class="accountRegister">
+		<div class="Iform">
+			{% if form.is_valid() -%}
+				 <p style="font-size:14px;">密码重设邮件已经发送到 <strong>{{ form.cleaned_data.email }}</strong>，请注意查收。</p>
+			{%- else -%}
+	    <form action="{% url account:forgot:index %}" method="post">
+	    	{{ csrf_token() }}
+	      <table>
+	        <tr>
+	          <th>{{ form.username.label }}：</th>
+	          <td>{{ form.username }}{% if form.username.errors %}<div class="formError">{{ form.username.errors.as_text() }}</div>{% endif %}
+	            <div class="formHelp">请输入你的用户名</div>
+	          </td>
+	        </tr>
+	        <tr>
+	          <th>{{ form.email.label }}：</th>
+	          <td>{{ form.email }}{% if form.email.errors %}<div class="formError">{{ form.email.errors.as_text() }}</div>{% endif %}
+	            <div class="formHelp">{{ form.email.help_text }}</div></td>
+	        </tr>
+	        <tr>
+	        	<th>验证码：</th>
+	        	<td><img id="captcha" src="{%url captcha%}?{% now "YmdHis" %}" /></td>
+	        </tr>
+	        <tr>
+	        	<th></th>
+	        	<td>{{captcha.captcha}}
+	        		{% if captcha.captcha.errors %}<div class="formError">{{ captcha.captcha.errors.as_text() }}</div>{% endif %}
+	        		<div class="formHelp">输入图片中的字符，不区分大小写。
+	        		<a onclick="$('#captcha').attr('src','{%url captcha%}?'+Math.random());return false;" href="#">看不清？</a></div></td>
+	        </tr>
+	        <tr>
+	        	<th></th>
+	        	<td><input type="submit" value="发送密码重置邮件" class="Isubmit" /></td>
+	        </tr>
+	      </table>
+	    </form>
+	    {%- endif %}
+	   </div>
+	</div>
+{%- endblock %}

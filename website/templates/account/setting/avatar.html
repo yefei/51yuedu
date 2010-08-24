@@ -1,0 +1,36 @@
+{% extends "account/setting/base.html" %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+
+{% block account_main %}
+	<h2>我的个人设置</h2>
+	
+	{{_menu('avatar')}}
+	
+	<div class="M20">
+		<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+		<td valign="top" width="200">
+			<h5 class="t">当前头像</h5>
+			<div align="center" class="MT10"><img src="/public/avatar/160/{{request.user.id}}.png?{% now 'Ymdhis' %}" /></div>
+		</td><td valign="top" style="padding-left:20px;">
+			<h5 class="t">上传头像</h5>
+			<form action="" enctype="multipart/form-data" method="post" class="M20">
+				{% if form.is_valid() %}
+				  <div class="complete">头像保存完成</div>
+				  <script>Web.slideTimeout('.complete');</script>
+				{% endif %}
+				{% if form.errors %}
+				   <div class="formBlockError">{{form.errors.values()|join}}</div>
+				{% endif %}
+				{{csrf_token()}}
+				{{ form.avatar }}
+				<div class="formHelp">
+					从你的电脑中选一张图片作为你的头像，建议图片尺寸超过200x200但不要太大。<br/>
+					{{ form.avatar.help_text }}
+				</div>
+				<div class="MT10"><button type="submit">保存</button></div>
+			</form>
+		</td></tr></table>
+	</div>
+{% endblock %}

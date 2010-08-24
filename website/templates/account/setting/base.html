@@ -1,0 +1,13 @@
+{% extends "account/base.html" %}
+
+{% macro _menu(selected=None) -%}
+	<div class="accountContentTopMenu">
+		<ul>
+			<li><a href="{% url account:setting:function %}"{%if selected=='function'%} class="s"{%endif%}>偏好设置</a></li>
+			<li><a href="{% url account:setting:profile %}"{%if selected=='profile'%} class="s"{%endif%}>个人资料</a></li>
+			<li><a href="{% url account:setting:avatar %}"{%if selected=='avatar'%} class="s"{%endif%}>头像</a></li>
+			<li><a href="{% url account:setting:password %}"{%if selected=='password'%} class="s"{%endif%}>账户密码</a></li>
+			<li><a href="{% url account:setting:email %}"{%if selected=='email'%} class="s"{%endif%}>电子邮件</a></li>
+		</ul>
+	</div>
+{%- endmacro %}

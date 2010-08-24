@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+body {background:#F3F4FF;}
+
+.wrap {width:auto;margin:0;padding:15px 30px;}
+
+.bookChapterOption {border-bottom:1px solid #666;padding:0 10px;margin-bottom:30px;height:30px;line-height:30px;}
+.bookChapterOption .color {float:left;}
+.bookChapterOption .account {float:right;word-spacing:8px;}
+.bookChapterOption .account a {text-decoration:underline;}
+.bookChapterOption .account a:hover {color:red;}
+.bookChapterOption a, .bookChapterOption a:VISITED {color:#333;}
+
+.bookChapterTtile {text-align:center;}
+.bookChapterTtile a, .bookChapterTtile a:VISITED {color:#333;}
+.bookChapterTtile p, .bookChapterTtile p a, .bookChapterTtile p a:VISITED {color:#999;}
+.bookChapterContent {font-size:14px;line-height:180%;color:#000;}
+.bookChapterContent p {margin:15px 0;text-indent:2em;}
+
+.bookChapterFooter {font-family:simsun;margin-top:30px;text-align:center;}
+.bookChapterFooter a:VISITED {color:#999;}
+
+.footer {border-top:1px solid #666;margin-top:30px;}
+

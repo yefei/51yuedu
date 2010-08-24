@@ -1,0 +1,59 @@
+{% extends "book/base.html" %}
+{% from '_macro/pagination.html' import paginate %}
+
+{% block title %}《{{book.title}}》的评论_{{super()}}{% endblock %}
+
+
+{% block main %}
+
+	
+	{% call site.menu('book') %}
+			{% object website.apps.book.models.Subarea as Subarea %}
+			<ul class="w2">
+				<li><a href="/book/">全部</a></li>
+			{% cache 86400 'book_show_site_menu' %}
+			{% for s in Subarea.objects.all() -%}
+				<li><a href="{{s.get_absolute_url()}}">{{s.label}}</a></li>
+			{% endfor %}
+			{% endcache %}
+			</ul>
+		{% endcall %}
+	
+	
+	<div class="breadcrumbs">
+		当前位置：<a href="/book/">小说</a> &raquo;
+			<a href="{{subarea.get_absolute_url()}}">{{subarea.label}}</a>
+			&raquo; <a href="{{category.get_absolute_url()}}">{{category.label}}</a>
+			&raquo; <a href="/book/{{book.id}}/">{{book.title}}</a>
+			&raquo; <a href="/book/{{book.id}}/review/">评论</a>
+	</div>
+	
+	<div class="FL" style="width:710px;">
+		<h2>评论《<a href="/book/{{book.id}}/">{{book.title}}</a>》</h2>
+		{% for r in review.object_list -%}
+			<div class="bookReview_list">
+				<div class="avatar"><img src="/public/avatar/40/{{r.user.id}}.png" /></div>
+				<div class="content">
+					<div class="info"><a name="post{{r.id}}">#{{r.id}}</a> &nbsp; &nbsp; {{r.user.username}} 发表于 {{r.created_at|localize}}</div>
+					<p>{{r.content|escape|replace('\n','<br/>')}}</p>
+				</div>
+				<div class="clear"></div>
+			</div>
+		{%- else -%}
+			<div class="NOSET">-- 还没有人来评论本小说 --</div>
+		{%- endfor %}
+		<div class="pagination">{{paginate(review)}}</div>
+	</div>
+	
+	<div class="FR" style="width:260px;">
+		<div class="simpleBlock">
+			本小说共有 {{review.count|intcomma}} 人发表评论
+		</div>
+		<p style="font-size:14px"><a href="/book/{{book.id}}/review/new/">&gt; 我来写评论</a></p>
+	</div>
+	
+	<div class="clear"></div>
+	
+
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% block title %}个人中心{% endblock %}
+
+
+{% block main %}
+	{{site.menu()}}
+	
+	<div class="accountIndex">
+		<div class="accountIndexMenu">
+			{% if request.user.is_admin -%}
+			<p><a href="/book/manage/">+ 管理小说</a></p>
+			<br/>
+			{%- endif %}
+			<p><a href="/book/favorite/">&gt; 我收藏的小说</a></p>
+			<p><a href="/book/read_point/">&gt; 我读过的小说</a></p>
+			<br/>
+			<p><a href="/my/setting/">&gt; 我的个人设置</a></p>
+		</div>
+		<div class="accountIndexMain">
+			{% block account_main %}{% endblock %}
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	
+{% endblock %}

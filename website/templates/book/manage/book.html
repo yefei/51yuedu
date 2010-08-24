@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+{% block title %}管理小说{% endblock %}
+
+
+{% block account_main %}
+	<h2>管理小说 - 《{{book.title}}》</h2>
+	<div class="breadcrumbs">
+		所属类别：
+		<a href="{{book.subarea.get_absolute_url()}}">{{book.subarea.label}}</a>
+			&raquo; <a href="{{book.category.get_absolute_url()}}">{{book.category.label}}</a>
+	</div>
+	
+	<div class="bookManage">
+		<div class="bookList">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<th width="50">卷号</th>
+					<th>章节</th>
+					<th width="80" style="text-align:right;">字数</th>
+					<th width="80" style="text-align:right;">大小</th>
+					<th width="60">&nbsp;</th>
+				</tr>
+				{% for c in book.book_chapter_set.all() -%}
+				<tr>
+					<td>{{c.vol_number}}</td>
+					<td class="title"><a href="/book/manage/chapter/{{c.id}}/">{{c.title}}</a></td>
+					<td class="length">{{c.length|intcomma}}</td>
+					<td class="length">{{c.size|intcomma}}</td>
+					<td><a href="#" onclick="Web.action('book-manage-delete_chapter','确定要删除本章节吗？',{id:{{c.id}}},Web.relocation);return false;">删除</a></td>
+				</tr>
+				{%- endfor %}
+			</table>
+			<p style="font-size:14px;line-height:30px;text-align:right;">
+				<a href="delete/">删除本小说</a> &nbsp; &nbsp; &nbsp;
+				<a href="add/">添加新章节</a>
+			</p>
+			
+		</div>
+	</div>
+	
+{% endblock %}

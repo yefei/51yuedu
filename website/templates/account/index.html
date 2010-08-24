@@ -1,0 +1,14 @@
+{% extends "account/base.html" %}
+
+
+{% block account_main %}
+
+	<h2>您好 {{request.user.username}}，欢迎登陆你的会员中心。</h2>
+	<br/>
+	<p>从 {{request.user.registered_at|localize}}
+		注册那天开始，你已经在本站在线了 {{request.user.online_seconds|seconds_format}}。
+		<br/>
+		共阅读过 <b>{{read_books|intcomma}}</b> 本小说！
+	</p>
+	
+{% endblock %}

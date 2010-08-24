@@ -1,0 +1,28 @@
+
+{% macro css() -%}
+	{% for v in varargs %}
+		<link href="/public/stylesheets/{{v}}.css" rel="stylesheet" type="text/css" media="all" />
+	{%- endfor %}
+{%- endmacro %}
+
+{% macro js() -%}
+	{% for v in varargs %}
+		<script type="text/javascript" src="/public/javascripts/{{v}}.js"></script>
+	{%- endfor %}
+{%- endmacro %}
+
+
+
+
+
+{% macro css_base() -%}
+	{{css('default','style')}}
+	{%- if varargs %}{{css(*varargs)}}{% endif %}
+{%- endmacro %}
+
+{% macro js_base() -%}
+	{{css('jquery-ui-1.8.1.theme/theme')}}
+	{{js('lib/jquery-1.4.2','lib/jquery-ui-1.8.1','lib/jquery.ui.datepicker-zh-CN','lib/jquery.cookie','web')}}
+	{%- if varargs %}{{js(*varargs)}}{% endif %}
+{%- endmacro %}
+

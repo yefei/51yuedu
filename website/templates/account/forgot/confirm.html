@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+{% block title %}设置新密码{% endblock %}
+
+{% block main -%}
+	{{site.menu()}}
+	<div class="accountRegister">
+		<div class="Iform">
+			{% if form.is_valid() -%}
+				 <p style="font-size:14px;">
+				 	你的用户名：<strong>{{ user.username }}</strong><br/>
+					你的密码已经修改完成，现在可以使用新密码来<a href="{% url account:login %}">登录</a>本站。
+				 </p>
+			{%- else -%}
+				{% if validlink %}
+			    <form action="" method="post">
+			    	{{ csrf_token() }}
+			      <table>
+					      <tr>
+					        <th style="padding-top:0;">你的用户名：</th>
+					        <td style="padding-top:0;">{{user.username}}</td>
+					      </tr>
+					      <tr>
+					        <th>新密码：</th>
+					        <td>{{form.new_password}}
+					        	{% if form.new_password.errors %}<div class="formError">{{ form.new_password.errors.as_text() }}</div>{% endif %}
+					          <div class="formHelp">请填入6至20个字符</div></td>
+					      </tr>
+					      <tr>
+					        <th>确认密码：</th>
+					        <td>{{form.new_password_confirmation}}
+					        	{% if form.new_password_confirmation.errors %}<div class="formError">{{ form.new_password_confirmation.errors.as_text() }}</div>{% endif %}
+					          <div class="formHelp">重复上面输入的新密码</div></td>
+					      </tr>
+			        <tr>
+			        	<th></th>
+			        	<td><input type="submit" value="确认修改密码" class="Isubmit" /></td>
+			        </tr>
+			      </table>
+			    </form>
+			  {% else %}
+					<div style="margin:30px;">
+						链接验证不正确！可能由以下原因造成：
+						<ol>
+							<li>时间太久链接已经失效</li>
+							<li>你的密码在请求密码重设后被修改过</li>
+						</ol>
+						请重新使用<a href="{% url account:forgot:index %}">密码重设</a>功能来获得一个新的验证链接。
+					</div>
+				{% endif %}
+	    {%- endif %}
+	   </div>
+	</div>
+{%- endblock %}

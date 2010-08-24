@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+{% block title %}新用户注册 - 我要阅读网{% endblock %}
+
+
+{% block main %}
+	{{site.menu()}}
+	
+	
+	<div class="accountRegister">
+		<h2>恭喜您，正式成为我要阅读网会员！</h2>
+	  <a href="/my/" style="font-size:14px;">立即进入我的会员中心</a>
+	</div>
+
+
+{% endblock %}

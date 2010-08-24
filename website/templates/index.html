@@ -1,0 +1,147 @@
+{% import '_macro/html.html' as html -%}
+{% import '_macro/site.html' as site with context -%}
+
+{%- object website.apps.book.models.Subarea as Subarea -%}
+{%- object website.apps.book.models.Book as Book -%}
+
+{% macro index_small_block(subarea_id) -%}
+	{%- set s = Subarea.objects.get(id=subarea_id) -%}
+	{%- set books = s.book_set.filter(rate_score__gt=0).select_related('category').order_by('-rate_score')[:10] -%}
+	<div class="indexSmallBlockContent">
+		<div class="title">
+			<h4>{{s.label}}</h4>
+			<a href="/book/s{{s.id}}/">更多...</a>
+		</div>
+		{% if books %}
+		<ul>
+			{% for b in books %}
+			<li><a href="/book/c{{b.category.id}}/" target="_blank" class="c">{{b.category.label}}</a>
+				<a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a>
+				<small title="作者">{{b.author_name}}</small></li>
+			{%- endfor %}
+		</ul>
+		{% else %}
+		<div class="NOSET">-- 暂无推荐 --</div>
+		{% endif %}
+	</div>
+{%- endmacro -%}
+
+{% macro index_small_block2(subarea_id) -%}
+	{%- set s = Subarea.objects.get(id=subarea_id) -%}
+	{%- set books = s.book_set.select_related('category').order_by('-updated_at')[:10] -%}
+	<div class="indexSmallBlockContent">
+		<div class="title">
+			<h4>{{s.label}}</h4>
+			<a href="/book/s{{s.id}}/">更多...</a>
+		</div>
+		{% if books %}
+		<ul>
+			{% for b in books %}
+			<li><a href="/book/c{{b.category.id}}/" target="_blank" class="c">{{b.category.label}}</a>
+			<a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a>
+			<small>{{b.updated_at|timeordate('H:i','m-d')}}</small></li>
+			{%- endfor %}
+		</ul>
+		{% else %}
+		<div class="NOSET">-- 暂无 --</div>
+		{% endif %}
+	</div>
+{%- endmacro -%}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>我要阅读网 网络小说 在线阅读 评论 txt小说免费下载网 手机免费小说 WWW.51YUEDU.COM</title>
+<meta name="title" content="我要阅读_精品文章阅读网_电子小说_txt小说免费下载" />
+<meta name="description" content="我要阅读网提供精品网络小说在线阅读、下载、评论。最方便的txt小说下载站！" />
+<meta name="keywords" content="我要阅读网,原创,网络小说,电子书,小说,文章,小说下载,TXT小说下载,手机小说,免费小说txt,txt小说免费下载" />
+{{html.css_base()}}{{html.js_base()}}
+</head>
+<body>
+	<div class="wrap MT10">{{site.header()}}</div>
+	<div class="wrap">{{site.menu('index')}}</div>
+	
+	{% cache 3600 'index' %}
+	<div class="wrap">
+		<div class="indexStatus">
+			本站共有小说 <b>{{Book.objects.count()|intcomma}}</b> 本，所有小说均提供GB2312、UTF-8 TXT版本免费下载，适合任何手机、MP4、PSP等设备。
+		</div>
+		<div class="indexCategory">
+			{% object website.apps.book.models.Subarea as Subarea %}
+			<dl>
+				{% for s in Subarea.objects.all() -%}
+				<dt><a href="{{s.get_absolute_url()}}">{{s.label}}</a></dt>
+					{% for c in s.book_category_set.all() -%}
+					<dd><a href="{{c.get_absolute_url()}}">{{c.label}}</a></dd>
+					{% endfor %}
+					<dd class="clear"></dd>
+				{% endfor %}
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<h4 class="indexSmallTitle">推荐作品</h4>
+		<div class="indexSmallBlock">{{index_small_block(1)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(2)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(3)}}</div>
+		<div class="indexSmallBlock" style="margin-right:0">{{index_small_block(4)}}</div>
+		<div class="clear"></div>
+		<div id="ads_index_rec_1"></div>
+		<div class="indexSmallBlock">{{index_small_block(5)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(6)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(7)}}</div>
+		<div class="indexSmallBlock" style="margin-right:0">{{index_small_block(8)}}</div>
+		<div class="clear"></div>
+		<div id="ads_index_rec_2"></div>
+		<div class="indexSmallBlock">{{index_small_block(9)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(10)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(11)}}</div>
+		<div class="indexSmallBlock" style="margin-right:0">{{index_small_block(12)}}</div>
+		<div class="clear"></div>
+		<div id="ads_index_rec_3"></div>
+		<div class="indexSmallBlock">{{index_small_block(13)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(14)}}</div>
+		<div class="indexSmallBlock">{{index_small_block(17)}}</div>
+		<div class="indexSmallBlock" style="margin-right:0">{{index_small_block(18)}}</div>
+		<div class="clear"></div>
+		<div id="ads_index_new_update_top"></div>
+		<h4 class="indexSmallTitle">近三天最新更新作品</h4>
+		<div class="bookList">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<th width="120">类别</th>
+					<th>小说名 / 最新章节</th>
+					<th width="90">作者</th>
+					<th width="60" style="text-align:right;">字数</th>
+					<th width="40" style="text-align:center;">评分</th>
+					<th width="70" style="text-align:right;">更新于</th>
+				</tr>
+				{%- now as _now %}{% timedelta days=3 as _days %}{% set _days = _now - _days -%}
+				{% for b in Book.objects.filter(updated_at__gt=_days).select_related('subarea','category').order_by('-updated_at')[:100] -%}
+				{% set c = b.book_chapter_set.all().latest('id') -%}
+				<tr>
+					<td class="category"><a href="/book/s{{b.subarea.id}}/">{{b.subarea.label}}</a> /
+						<a href="/book/c{{b.category.id}}/">{{b.category.label}}</a></td>
+					<td class="title"><a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a> /
+						<a href="/book/chapter/{{c.id}}" target="_blank">{{c.title}}</a>
+					</td>
+					<td class="author"><a href="/search/book/{{b.author_name|urlencode}}/" target="_blank">{{b.author_name}}</a></td>
+					<td class="length">{{b.length|intcomma}}</td>
+					<td class="rate" style="color:{%if b.rate_average>0%}red{%elif b.rate_average<0%}green{%else%}#ddd{%endif%}">{{b.rate_average}}</td>
+					<td class="updated_at">{{b.updated_at|timeordate}}</td>
+				</tr>
+				{% else %}
+				<tr>
+					<td colspan="6"><div class="NOSET">-- 近三天没有作品更新 --</div></td>
+				</tr>
+				{%- endfor %}
+			</table>
+		</div>
+	</div>
+	<!-- cache at: {% now %} -->
+	{% endcache %}
+	
+	
+	<div class="wrap">{{site.footer()}}</div>
+</body>
+</html>

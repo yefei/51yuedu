@@ -1,0 +1,47 @@
+
+{% macro header() -%}
+	<div class="siteHeader">
+		<div class="siteHeaderLogo"><a href="/"><img src="/public/images/logo.png" /></a></div>
+		<div class="siteHeaderSearch">
+			<form action="/search/book/" method="get" target="_blank" id="site_search_form">
+				<input type="text" name="word" class="siteHeaderSearch_text" />
+				<input type="submit" value="搜 索" class="siteHeaderSearch_button" />
+			</form>
+		</div>
+	</div>
+{%- endmacro %}
+
+{% macro menu(selected=None) -%}
+	<div class="siteMenu">
+		<div class="siteMenu_main">
+			<ul>
+				<li{%if selected=='index'%} class="s"{%endif%}><a href="/">首页</a></li>
+				<li class="sp">|</li>
+				<li{%if selected=='book'%} class="s"{%endif%}><a href="/book/">小说</a></li>
+				<li class="account">
+				{% if request.user.is_authenticated() -%}
+					用户：{{request.user.username}} <a href="/my/">进入会员中心</a>
+					<a href="/my/logout/" class="href_logout">退出</a>
+				{%- else -%}
+					<a href="/my/login/" class="href_login">登陆</a> | <a href="/my/register/">注册</a>
+				{%- endif %}
+				</li>
+			</ul>
+		</div>
+		{% if caller %}<div class="siteMenu_sub">{{caller()}}<div class="clear"></div></div>{% endif %}
+	</div>
+{%- endmacro %}
+
+{% macro footer(show_icp=True) -%}
+	<div class="footer">
+		<div class="footerCopyright">&copy; 2010 我要阅读网-自由书库</div>
+		{% if show_icp %}<div class="footerICP"><a href="http://www.miibeian.gov.cn/">蜀ICP备10038409号</a></div>{% endif %}
+		<div class="footerMenu">
+			<a href="/about/feedback/">留言/反馈</a>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F484ff0ae5db23d1d37fb634100997bf5' type='text/javascript'%3E%3C/script%3E"));
+</script>
+		</div>
+	</div>
+{%- endmacro %}

@@ -1,0 +1,23 @@
+{% extends "account/base.html" %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+{% block title %}管理小说{% endblock %}
+
+
+{% block account_main %}
+	<h2>管理小说 - 《{{book.title}}》</h2>
+	<div class="breadcrumbs">
+		所属类别：
+		<a href="{{book.subarea.get_absolute_url()}}">{{book.subarea.label}}</a>
+			&raquo; <a href="{{book.category.get_absolute_url()}}">{{book.category.label}}</a>
+	</div>
+	
+	<div class="bookManage">
+		<p style="color:red;font-size:14px;">你确定要删除《{{book.title}}》吗？</p>
+		<form action="" method="post">
+			{{csrf_token()}}
+			<button type="submit">确定删除</button>
+		</form>
+	</div>
+	
+{% endblock %}

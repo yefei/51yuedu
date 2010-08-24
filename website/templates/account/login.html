@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+{% block title %}用户登陆 - 我要阅读网{% endblock %}
+
+
+{% block main %}
+	{{site.menu()}}
+	
+	
+	<div class="accountLogin">
+		<h4>登陆我要阅读网</h4>
+		{% if not request.user.is_authenticated() -%}
+		<form action="{%url account:login%}" method="post">
+	    {{ csrf_token() }}
+	    <input type="hidden" name="next" value="{{request.REQUEST.next|escape}}" />
+	    <table class="TableForm">
+	    {% if form.non_field_errors() %}
+						          <tr><td colspan="2"><div class="formError">{{form.non_field_errors().as_text()}}</div></td></tr>
+						        {% endif %}
+	        <tr>
+	          <th>{{ form.username.label }}：</th>
+	          <td>{{ form.username }}{% if form.username.errors %}<div class="formError">{{ form.username.errors.as_text() }}</div>{% endif %}
+	          </td>
+	        </tr>
+	        <tr>
+	          <th>{{ form.password.label }}：</th>
+	          <td>{{ form.password }}{% if form.password.errors %}<div class="formError">{{ form.password.errors.as_text() }}</div>{% endif %}
+	          </td>
+	        </tr>
+	        <tr>
+				    <th></th>
+				    <td class="check_box"><label>{{ form.remberme }}在这台电脑上记住我(一个月之内不用再登录) </label></td>
+				  </tr>
+	        <tr>
+	        	<th></th>
+	        	<td><button type="submit" class="light">登 陆</button></td>
+	        </tr>
+	     </table>
+	   </form>
+	   <div class="accountLoginTip">
+	   	<p><a href="{% url account:register %}">&gt; 我还没有注册</a></p>
+	   	<p><a href="{% url account:forgot:index %}">&gt; 忘记密码？</a></p>
+	   </div>
+	   <div class="clear"></div>
+	   {%- else -%}
+								<div style="margin:50px 0;text-align:center;">
+									“<b>{{request.user.username}}</b>” 你已经登陆了
+									<p><a href="{% url account:index %}">个人中心</a> | <a href="{% url account:logout %}" class="href_logout">更换账户</a></p>
+								</div>
+							{%- endif %}
+	</div>
+
+
+{% endblock %}

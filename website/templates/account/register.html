@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+{% block title %}新用户注册 - 我要阅读网{% endblock %}
+
+
+{% block main %}
+	{{site.menu()}}
+	
+	
+	<div class="accountRegister">
+		<h4>注册成为我要阅读网会员，享受更多功能</h4>
+	    <form action="{%url account:register%}" method="post">
+	    	{{ csrf_token() }}
+	      <table class="TableForm">
+	        <tr>
+	          <th>{{ form.username.label }}：</th>
+	          <td>{{ form.username }}{% if form.username.errors %}<div id="username_tip_formerror" class="formError">{{ form.username.errors.as_text() }}</div>{% endif %}
+	          	<div id="username_tip"></div>
+	            <div class="formHelp">
+	            		可以使用字母数字和汉字
+	            		<br/>不能少于4个字符或2个汉字且不能多于16个字符或8个汉字
+	            </div>
+	          </td>
+	        </tr>
+	        <tr>
+	          <th>{{ form.password.label }}：</th>
+	          <td>{{ form.password }}{% if form.password.errors %}<div class="formError">{{ form.password.errors.as_text() }}</div>{% endif %}
+	            <div class="formHelp">{{ form.password.help_text }}</div></td>
+	        </tr>
+	        <tr>
+	          <th>{{ form.password_confirmation.label }}：</th>
+	          <td>{{ form.password_confirmation }}{% if form.password_confirmation.errors %}<div class="formError">{{ form.password_confirmation.errors.as_text() }}</div>{% endif %}
+	            <div class="formHelp">{{ form.password_confirmation.help_text }}</div></td>
+	        </tr>
+	        <tr>
+	          <th>{{ form.email.label }}：</th>
+	          <td>{{ form.email }}{% if form.email.errors %}<div class="formError">{{ form.email.errors.as_text() }}</div>{% endif %}
+	            <div class="formHelp">{{ form.email.help_text }}</div></td>
+	        </tr>
+	        <tr>
+	        	<th>验证码：</th>
+	        	<td><img id="captcha" src="{%url captcha%}?{% now "YmdHis" %}" /></td>
+	        </tr>
+	        <tr>
+	        	<th></th>
+	        	<td>{{captcha.captcha}}
+	        		{% if captcha.captcha.errors %}<div class="formError">{{ captcha.captcha.errors.as_text() }}</div>{% endif %}
+	        		<div class="formHelp">输入图片中的字符，不区分大小写。
+	        		<a onclick="$('#captcha').attr('src','{%url captcha%}?'+Math.random());return false;" href="#">看不清？</a></div></td>
+	        </tr>
+	        <tr>
+	        	<th></th>
+	        	<td><button type="submit" class="light">确认注册！</button></td>
+	        </tr>
+	      </table>
+	    </form>
+	   </div>
+
+<script type="text/javascript">
+<!--
+var _username_input = $('#id_username');
+var _username_tip = $('#username_tip');
+var _username_tip_formerror = $('#username_tip_formerror');
+Web.ajaxCheck('account-validate_username_uniqueness',
+		function(){return $.param({username:_username_input.val()});},
+		function(v){_username_tip_formerror.remove(); _username_tip.text(v.message); if(v.valid)_username_tip.css('color','green'); else _username_tip.css('color','red');},
+		function(i){_username_tip_formerror.remove(); _username_tip.text(i);_username_tip.css('color','#666');});
+//-->
+</script>
+
+{% endblock %}

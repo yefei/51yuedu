@@ -1,0 +1,92 @@
+{% extends "book/base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from '_macro/pagination.html' import rest_paginate %}
+
+
+{% block main %}
+
+		{% call site.menu('book') %}
+			{% object website.apps.book.models.Subarea as Subarea %}
+			<ul class="w2">
+				<li class="s"><a href="/book/">全部</a></li>
+			{% cache 86400 'book_show_site_menu' %}
+			{% for s in Subarea.objects.all() -%}
+				<li><a href="{{s.get_absolute_url()}}">{{s.label}}</a></li>
+			{% endfor %}
+			{% endcache %}
+			</ul>
+		{% endcall %}
+
+	<div class="breadcrumbs">
+		当前位置：<a href="/">我要阅读网</a> &raquo;
+			<a href="/book/">小说</a>
+	</div>
+	
+	<div class="FR" style="width:770px;">
+		<div class="bookIndexTip">
+			本站共有小说 <b>{{books.count|intcomma}}</b> 本
+		</div>
+		<div class="bookList">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<th width="120">类别</th>
+					<th>小说名</th>
+					<th width="90">作者</th>
+					<th width="60" style="text-align:right;">字数</th>
+					<th width="40" style="text-align:center;">评分</th>
+					<th width="70" style="text-align:right;">最后更新</th>
+				</tr>
+				{% for b in books.object_list -%}
+				<tr>
+					<td class="category"><a href="/book/s{{b.subarea.id}}/">{{b.subarea.label}}</a> / <a href="/book/c{{b.category.id}}/">{{b.category.label}}</a></td>
+					<td class="title"><a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a></td>
+					<td class="author"><a href="/search/book/{{b.author_name|urlencode}}/" target="_blank">{{b.author_name}}</a></td>
+					<td class="length">{{b.length|intcomma}}</td>
+					<td class="rate" style="color:{%if b.rate_average>0%}red{%elif b.rate_average<0%}green{%else%}#ddd{%endif%}">{{b.rate_average}}</td>
+					<td class="updated_at">{{b.updated_at|timeordate}}</td>
+				</tr>
+				{%- endfor %}
+			</table>
+		</div>
+		
+		<div class="pagination">{{rest_paginate(books)}}</div>
+		
+		
+	</div>
+
+
+	<div class="FL" style="width:200px;">
+		<div class="subBlock">
+			<h4>推荐作品</h4>
+			<ul>
+				{% cache 3600 'books_subBlock_rec' %}
+				{% object website.apps.book.models.Book as Book %}
+				{% for b in Book.objects.filter(rate_score__gt=0).order_by('-rate_score')[:12] %}
+					<li><a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a></li>
+				{% else %}
+					<li>-- 暂无 --</li>
+				{% endfor %}
+				{% endcache %}
+			</ul>
+		</div>
+	
+		<div class="subBlock MT10">
+			<h4>人气作品</h4>
+			<ul>
+				{% cache 3600 'books_subBlock_rank' %}
+				{% object website.apps.book.models.Book as Book %}
+				{% for b in Book.objects.filter(views__gt=10).order_by('-views')[:12] %}
+					<li><a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a></li>
+				{% else %}
+					<li>-- 暂无 --</li>
+				{% endfor %}
+				{% endcache %}
+			</ul>
+		</div>
+		<iframe id="baiduSpFrame" border="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" framespacing="0" frameborder="0" scrolling="no" width="200" height="200" src="http://spcode.baidu.com/spcode/spstyle/style2091.jsp?tn=xiongsir_sp&ctn=0&styleid=2091"></iframe>
+	</div>
+	
+	<div class="clear"></div>
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "account/setting/base.html" %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+
+{% block account_main %}
+	<h2>我的个人设置</h2>
+	
+	{{_menu('function')}}
+	
+	<div class="M20">
+			<form action="" method="post">
+				{% if form.is_valid() %}
+				  <div class="complete">保存完成</div>
+				  <script>Web.slideTimeout('.complete');</script>
+				{% endif %}
+				{% if form.errors %}
+				   <div class="formBlockError">{{form.errors.values()|join}}</div>
+				{% endif %}
+				{{csrf_token()}}
+				<table class="TableForm">
+		      {{form.as_table()}}
+		      <tr>
+		        <td></td>
+		        <td><button type="submit">保存</button></td>
+		      </tr>
+		    </table>
+			</form>
+	</div>
+{% endblock %}

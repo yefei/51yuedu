@@ -1,0 +1,36 @@
+/* $Id$ */
+@CHARSET "UTF-8";
+
+* {color:#333;}
+body {padding:0;margin:0;}
+form,pre {margin:0;padding:0;border:0;}
+ol {padding:0 0 0 20px;}
+textarea{overflow:auto;}
+input {padding-left:3px;padding-right:3px;}
+input,textarea,select{font-size:14px;line-height:120%}
+textarea {border:1px solid #ccc;padding:3px;}
+a{cursor:pointer}
+a:link {color:#25578A; text-decoration:none; }
+a:visited {color:#666699; text-decoration:none; }
+a:hover {color:#C00000; text-decoration:underline; }
+a:active {color:#C00000; text-decoration:underline; }
+a img {border-width:0;}
+
+body,td,th,textarea,input,select,button {font-size:12px;font-family:Helvetica, Arial, sans-serif; line-height:150%;}
+table {border-collapse:collapse; border:none; padding:0; margin:0;border-spacing:0;}
+ul,dl {list-style-type:none;margin:0;padding:0;}
+dt {font-weight:bold}
+dd {margin-left:15px;}
+blockquote,li,p,object,embed {margin:0;padding:0;}
+
+h1,h2,h3,h4,h5,h6 {margin:0;padding:0;color:#36393D;}
+h1 {font-size:26px;line-height:30px;height:30px;}
+h2 {font-size:22px;line-height:26px;height:26px;}
+h3 {font-size:18px;line-height:24px;height:24px;}
+h4 {font-size:14px;line-height:20px;height:20px;}
+h5 {font-size:12px;line-height:16px;height:16px;}
+h6 {font-size:10px;line-height:14px;height:14px;}
+
+button.large {font-size:14px;font-weight:bold;padding:3px 8px;color:#FFF4DB;background:#F5900F;border-color:#FFDE90;border-bottom-color:#DB6429;border-right-color:#DB6429; *padding:0 4px;*padding-top:2px;}
+button.light {font-weight:bold;padding:5px 15px;}
+button.gray {background:#F2F2F2;border:1px solid #CACACA;color:#666}

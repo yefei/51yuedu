@@ -1,0 +1,110 @@
+{% extends "book/base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from '_macro/pagination.html' import rest_paginate %}
+
+{% block title %}{%if category%}{{category.label}}_{% endif %}{{subarea.label}}_{{super()}}{% endblock %}
+
+
+{% block main %}
+
+		{% call site.menu('book') %}
+			{% object website.apps.book.models.Subarea as Subarea %}
+			<ul class="w2">
+				<li><a href="/book/">全部</a></li>
+			{% for s in Subarea.objects.all() -%}
+				<li{%if subarea.id == s.id%} class="s"{%endif%}><a href="{{s.get_absolute_url()}}">{{s.label}}</a></li>
+			{% endfor %}
+			</ul>
+		{% endcall %}
+
+	<div class="breadcrumbs">
+		当前位置：<a href="/">我要阅读网</a> &raquo;
+			<a href="/book/">小说</a> &raquo;
+			<a href="{{subarea.get_absolute_url()}}">{{subarea.label}}</a>
+			{%if category%}&raquo; <a href="{{category.get_absolute_url()}}">{{category.label}}</a>{% endif %}
+	</div>
+	
+	<div class="FR" style="width:770px;">
+		<div class="bookCategories">
+			<div class="FL" style="width:80px;text-align:right;"><b>作品分类：</b></div>
+			<ul class="FR" style="width:670px;">
+				<li{%if not category%} class="s"{%endif%}><a href="/book/s{{subarea.id}}/">全部</a></li>
+				{% for k,c in categories.items() %}
+					<li{%if category and category.id == k%} class="s"{%endif%}><a href="/book/c{{k}}/">{{c.label}}</a></li>
+				{% endfor %}
+			</ul>
+			<div class="clear"></div>
+		</div>
+		
+		<div class="bookList">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<th width="70">类别</th>
+					<th>小说名</th>
+					<th width="90">作者</th>
+					<th width="60" style="text-align:right;">字数</th>
+					<th width="40" style="text-align:center;">评分</th>
+					<th width="70" style="text-align:right;">最后更新</th>
+				</tr>
+				{% for b in books.object_list -%}
+				<tr>
+					<td class="category"><a href="/book/c{{b.category_id}}/">{{categories[b.category_id].label}}</a></td>
+					<td class="title"><a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a>{%if b.is_complete%} 完本{%endif%}</td>
+					<td class="author"><a href="/search/book/{{b.author_name|urlencode}}/" target="_blank">{{b.author_name}}</a></td>
+					<td class="length">{{b.length|intcomma}}</td>
+					<td class="rate" style="color:{%if b.rate_average>0%}red{%elif b.rate_average<0%}green{%else%}#ddd{%endif%}">{{b.rate_average}}</td>
+					<td class="updated_at">{{b.updated_at|timeordate}}</td>
+				</tr>
+				{%- endfor %}
+			</table>
+		</div>
+		
+		<div class="pagination">{{rest_paginate(books)}}</div>
+		
+		
+	</div>
+
+
+	<div class="FL" style="width:200px;">
+		<div class="subBlock">
+			<h4>推荐作品</h4>
+			<ul>
+				{% cache 3600 'books_subBlock_rec_subarea' subarea.id %}
+				{% for b in subarea.book_set.filter(rate_score__gt=0).order_by('-rate_score')[:12] %}
+					<li><a href="/book/{{b.id}}/" target="_blank">{{categories[b.category_id].label}} - {{b.title}}</a></li>
+				{% else %}
+					<li>-- 暂无 --</li>
+				{% endfor %}
+				{% endcache %}
+			</ul>
+		</div>
+	
+		<div class="subBlock MT10">
+			<h4>{%if category%}{{category.label}}{%endif%}人气作品</h4>
+			<ul>
+			{%if category%}
+				{% cache 3600 'books_subBlock_rank_category' category.id %}
+				{% for b in category.book_set.filter(views__gt=10).order_by('-views')[:12] %}
+					<li><a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a></li>
+				{% else %}
+					<li>-- 暂无 --</li>
+				{% endfor %}
+				{% endcache %}
+			{% else %}
+				{% cache 3600 'books_subBlock_rank_subarea' subarea.id %}
+				{% for b in subarea.book_set.filter(views__gt=10).order_by('-views')[:12] %}
+					<li><a href="/book/{{b.id}}/" target="_blank">{{categories[b.category_id].label}} - {{b.title}}</a></li>
+				{% else %}
+					<li>-- 暂无 --</li>
+				{% endfor %}
+				{% endcache %}
+			{% endif %}
+			</ul>
+		</div>
+		<iframe id="baiduSpFrame" border="0" vspace="0" hspace="0" marginwidth="0" marginheight="0" framespacing="0" frameborder="0" scrolling="no" width="200" height="200" src="http://spcode.baidu.com/spcode/spstyle/style2091.jsp?tn=xiongsir_sp&ctn=0&styleid=2091"></iframe>
+	</div>
+	
+	<div class="clear"></div>
+
+
+{% endblock %}

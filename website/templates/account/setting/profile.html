@@ -1,0 +1,39 @@
+{% extends "account/setting/base.html" %}
+{% from 'django/macro.html' import csrf_token with context %}
+
+
+{% block account_main %}
+	<h2>我的个人设置</h2>
+	
+	{{_menu('profile')}}
+	
+	<div class="M20">
+			<form action="" method="post">
+				{% if form.is_valid() %}
+				  <div class="complete">个人资料保存完成</div>
+				  <script>Web.slideTimeout('.complete');</script>
+				{% endif %}
+				{% if form.errors %}
+				   <div class="formBlockError">{{form.errors.values()|join}}</div>
+				{% endif %}
+				{{csrf_token()}}
+				<table class="TableForm">
+		      <tr>
+		        <th>性别：</th>
+		        <td class="t">{{form.gender}}
+		        	{% if form.gender.errors %}<div class="formError">{{ form.gender.errors.as_text() }}</div>{% endif %}</td>
+		      </tr>
+		      <tr>
+		        <th>生日：</th>
+		        <td class="t">{{form.birthday}}
+		        	{% if form.birthday.errors %}<div class="formError">{{ form.birthday.errors.as_text() }}</div>{% endif %}</td>
+		      </tr>
+		      <tr>
+		        <td></td>
+		        <td><button type="submit">保存</button></td>
+		      </tr>
+		    </table>
+			</form>
+	</div>
+	<script type="text/javascript">Web.birthday('#id_birthday');</script>
+{% endblock %}

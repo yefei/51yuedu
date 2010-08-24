@@ -1,0 +1,84 @@
+
+
+
+{% macro paginate(pagination_obj, previous_label='&lsaquo;&lsaquo; 上一页', next_label='下一页 &rsaquo;&rsaquo;') %}
+	{%- if pagination_obj.pages > 1 -%}
+    {%- if pagination_obj.page_obj.has_previous() -%}
+        <a href="?{{ pagination_obj.field_name }}={{ pagination_obj.page_obj.previous_page_number() }}{{ pagination_obj.get_vars() }}" class="prev">{{ previous_label }}</a>&nbsp;
+    {%- else -%}
+        <span class="disabled prev">{{ previous_label }}</span>&nbsp;
+    {%- endif -%}
+    {%- for i in pagination_obj.page_window_range() -%}
+        {%- if i -%}
+            {%- if i == pagination_obj.page_obj.number -%}
+                <span class="current page">{{ i }}</span>&nbsp;
+            {%- else -%}
+                <a href="?{{ pagination_obj.field_name }}={{ i }}{{ pagination_obj.get_vars() }}" class="page">{{ i }}</a>&nbsp;
+            {%- endif -%}
+        {%- else -%}
+            <span>...</span>&nbsp;
+        {%- endif -%}
+    {%- endfor -%}
+    {%- if pagination_obj.page_obj.has_next() -%}
+        <a href="?{{ pagination_obj.field_name }}={{ pagination_obj.page_obj.next_page_number() }}{{ pagination_obj.get_vars() }}" class="next">{{ next_label }}</a>&nbsp;
+    {%- else -%}
+        <span class="disabled next">{{ next_label }}</span>&nbsp;
+    {%- endif -%}
+  {%- endif -%}
+{% endmacro %}
+
+
+{% macro simple_paginate(pagination_obj) %}
+	{%- if pagination_obj.pages > 1 -%}
+    {%- if pagination_obj.page_obj.has_previous() -%}
+        <a href="?{{ pagination_obj.field_name }}={{ pagination_obj.page_obj.previous_page_number() }}{{ pagination_obj.get_vars() }}" class="prev">&lsaquo;&lsaquo; 上一页</a>&nbsp;
+    {%- endif -%}
+    <span class="current">{{pagination_obj.page}}/{{pagination_obj.pages}} 页</span>
+    {%- if pagination_obj.page_obj.has_next() -%}
+        <a href="?{{ pagination_obj.field_name }}={{ pagination_obj.page_obj.next_page_number() }}{{ pagination_obj.get_vars() }}" class="next">下一页 &rsaquo;&rsaquo;</a>&nbsp;
+    {%- endif -%}
+  {%- endif -%}
+{% endmacro %}
+
+
+
+
+
+
+{% macro rest_paginate(pagination_obj, previous_label='&lsaquo;&lsaquo; 上一页', next_label='下一页 &rsaquo;&rsaquo;') %}
+	{%- if pagination_obj.pages > 1 -%}
+    {%- if pagination_obj.page_obj.has_previous() -%}
+        <a href="{{ pagination_obj.get_url(pagination_obj.page_obj.previous_page_number()) }}" class="prev">{{ previous_label }}</a>&nbsp;
+    {%- else -%}
+        <span class="disabled prev">{{ previous_label }}</span>&nbsp;
+    {%- endif -%}
+    {%- for i in pagination_obj.page_window_range() -%}
+        {%- if i -%}
+            {%- if i == pagination_obj.page_obj.number -%}
+                <span class="current page">{{ i }}</span>&nbsp;
+            {%- else -%}
+                <a href="{{ pagination_obj.get_url(i) }}" class="page">{{ i }}</a>&nbsp;
+            {%- endif -%}
+        {%- else -%}
+            <span>...</span>&nbsp;
+        {%- endif -%}
+    {%- endfor -%}
+    {%- if pagination_obj.page_obj.has_next() -%}
+        <a href="{{ pagination_obj.get_url(pagination_obj.page_obj.next_page_number()) }}" class="next">{{ next_label }}</a>&nbsp;
+    {%- else -%}
+        <span class="disabled next">{{ next_label }}</span>&nbsp;
+    {%- endif -%}
+  {%- endif -%}
+{% endmacro %}
+
+
+
+
+
+
+
+
+
+
+
+

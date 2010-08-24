@@ -1,0 +1,34 @@
+{% extends "account/base.html" %}
+{% block title %}我读过的小说 - 个人中心{% endblock %}
+
+
+{% block account_main %}
+	<h2>我读过的小说</h2>
+	
+	<div class="bookReadPointList">
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<th width="100">类别</th>
+				<th>小说名 / 已读章节</th>
+				<th width="140">始读于</th>
+				<th width="80">上次阅读于</th>
+				<th width="40"></th>
+			</tr>
+			{% for b in books.object_list -%}
+			<tr>
+				<td>{{b.book.subarea.label}}/{{b.book.category.label}}</td>
+				<td class="title"><a href="/book/{{b.book.id}}/">{{b.book.title}}</a> /
+						<a href="/book/chapter/{{b.chapter.id}}/">{{b.chapter.title}}</a></td>
+				<td>{{b.started_at|localize}}</td>
+				<td>{{b.last_read_at|timesince_short}}前</td>
+				<td><a href="#" onclick="Web.action('book-delete_point','确定要删除本条记录吗？',{id:{{b.id}}},Web.relocation);return false;">删除</a></td>
+			</tr>
+			{%- else -%}
+			<tr>
+				<td colspan="5"><div class="NOSET">-- 没有你的阅读记录 --</div></td>
+			</tr>
+			{%- endfor %}
+		</table>
+	</div>
+	
+{% endblock %}
