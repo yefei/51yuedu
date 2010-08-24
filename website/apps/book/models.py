@@ -4,9 +4,10 @@ from django.db.models import permalink, signals
 from django.contrib.sphinxsearch.models import SphinxSearch
 from website.apps.book import chapter_db
 from website.apps.account.models import User
+from website.utils.pinyin import Hanzi2Pinyin
 
 
-# Create your models here.
+pinyin = Hanzi2Pinyin()
 
 
 class Subarea(models.Model):
@@ -69,7 +70,11 @@ class Book(models.Model):
     class Meta:
         #ordering = ('-id',)
         verbose_name = verbose_name_plural = u'小说'
-
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('book:slug_show', (self.id, '-'.join(pinyin.convert(self.title))))
+    
     def check_rated(self, user):
         return self.book_rate_set.filter(user=user).exists()
 

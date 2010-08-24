@@ -17,7 +17,7 @@
 			{% for b in books.object_list -%}
 			<tr>
 				<td>{{b.book.subarea.label}} / {{b.book.category.label}}</td>
-				<td class="title"><a href="/book/{{b.book.id}}/">{{b.book.title}}</a></td>
+				<td class="title"><a href="{{b.book.get_absolute_url()}}">{{b.book.title}}</a></td>
 				<td><a href="/search/book/{{b.book.author_name|urlencode}}/" target="_blank">{{b.book.author_name}}</a></td>
 				<td>{{b.created_at|localize}}</td>
 				<td><a href="#" onclick="Web.action('book-delete_favorite','确定要删除本条收藏吗？',{id:{{b.id}}},Web.relocation);return false;">删除</a></td>

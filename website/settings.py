@@ -4,7 +4,7 @@ ROOT_PATH = os.path.normpath(os.path.dirname(__file__))
 PUBLIC_ROOT = os.path.join(ROOT_PATH,'../public/')
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

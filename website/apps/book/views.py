@@ -57,7 +57,7 @@ def number2chinese(number):
 """
 
 @render
-def show(request, id):
+def show(request, id, slug=None):
     book = get_object_or_404(Book.objects.select_related('subarea','category'), id=id)
     subarea = book.subarea
     category = book.category

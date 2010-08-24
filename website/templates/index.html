@@ -16,7 +16,7 @@
 		<ul>
 			{% for b in books %}
 			<li><a href="/book/c{{b.category.id}}/" target="_blank" class="c">{{b.category.label}}</a>
-				<a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a>
+				<a href="/book/{{b.get_absolute_url()}}/" target="_blank">{{b.title}}</a>
 				<small title="作者">{{b.author_name}}</small></li>
 			{%- endfor %}
 		</ul>
@@ -38,7 +38,7 @@
 		<ul>
 			{% for b in books %}
 			<li><a href="/book/c{{b.category.id}}/" target="_blank" class="c">{{b.category.label}}</a>
-			<a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a>
+			<a href="/book/{{b.get_absolute_url()}}/" target="_blank">{{b.title}}</a>
 			<small>{{b.updated_at|timeordate('H:i','m-d')}}</small></li>
 			{%- endfor %}
 		</ul>
@@ -122,7 +122,7 @@
 				<tr>
 					<td class="category"><a href="/book/s{{b.subarea.id}}/">{{b.subarea.label}}</a> /
 						<a href="/book/c{{b.category.id}}/">{{b.category.label}}</a></td>
-					<td class="title"><a href="/book/{{b.id}}/" target="_blank">{{b.title}}</a> /
+					<td class="title"><a href="/book/{{b.get_absolute_url()}}/" target="_blank">{{b.title}}</a> /
 						<a href="/book/chapter/{{c.id}}" target="_blank">{{c.title}}</a>
 					</td>
 					<td class="author"><a href="/search/book/{{b.author_name|urlencode}}/" target="_blank">{{b.author_name}}</a></td>
