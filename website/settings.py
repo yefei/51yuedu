@@ -84,9 +84,10 @@ if DEBUG:
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # MySite Config
-MEMCACHEDB = ('222.186.30.7:21202',)
-#MEMCACHEDB = ('unix:/tmp/memcachedb_51yuedu.sock',)
-SPHINX_SERVER = '127.0.0.1'
+#MEMCACHEDB = ('222.186.30.7:21202',)
+MEMCACHEDB = ('unix:/tmp/memcachedb_51yuedu.sock',)
+CACHE_BACKEND = 'locmem://'
+SPHINX_SERVER = '/home/yefe/app/sphinx-for-chinese/var/searchd.sock'
 
 
 
