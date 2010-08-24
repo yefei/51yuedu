@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # Create by: Yefe @ 2009-8-19
 # $Id$
-import os, random
-from glob import glob
+import os
 from random import choice
 from cStringIO import StringIO
 from PIL import Image, ImageColor, ImageDraw, ImageFont
