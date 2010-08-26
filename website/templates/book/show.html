@@ -63,7 +63,7 @@
 			<div class="bookShowVol">
 				{% for v in vol %}
 				<div class="title">
-					<h3>第{{v}}卷</h3>
+					<h3>第{{v}}卷{% if vol_name[v] %} - {{vol_name[v]}}{% endif %}</h3>
 					<span>&nbsp;</span>
 				</div>
 				<div class="chapter">

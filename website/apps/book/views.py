@@ -19,6 +19,10 @@ def index(request, page=1):
     return 'book/index.html', locals()
 
 @render
+def authors(request, category_id):
+    return 'book/authors.html', locals()
+
+@render
 def books(request, subarea_id=None, category_id=None, page=1):
     if subarea_id:
         subarea = get_object_or_404(Subarea, id=subarea_id)
@@ -63,10 +67,12 @@ def show(request, id, slug=None):
     category = book.category
     vol = []
     chapter = {}
+    vol_name = {}
     for c in book.book_chapter_set.all():
         if c.vol_number not in vol:
             vol.append(c.vol_number)
             chapter[c.vol_number] = []
+            vol_name[c.vol_number] = c.vol_name
         chapter[c.vol_number].append(c)
     
     # 评分
