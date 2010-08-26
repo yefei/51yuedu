@@ -1,4 +1,4 @@
-# -*- coding: gbk -*-
+# -*- coding: utf-8 -*-
 # $Id$
 # Copyright 2010 Yefe<yefe@ichuzhou.cn>
 import os
@@ -10,37 +10,37 @@ class Hanzi2Pinyin(object):
         try:
             fp = open(os.path.join(os.path.dirname(__file__), 'pinyin.txt'))
         except IOError:
-            raise Exception("Can't load data from pinyin.txt\nPlease make sure this file exists.")
+            raise Exception("Can't load data from pinyin.txt")
         else:
-            self.data = fp.read().decode('gbk')
-            for l in self.data.split('\n'):
+            data = fp.read().decode('utf-8')
+            for l in data.split('\n'):
                 self.table[l[0]] = l[1:]
+            del data
             fp.close()
 
     def convert(self, value):
         pinyin = []
         tASCII = ''
-        # ×Ö·û¼ì²é
-        for c in value.lower() + ' ': # ¼Ó¸ö¿Õ¸ñ¶àÒ»´ÎÑ­»· ÐÞÕýÎ²²¿×Ö·û¶ªÊ§ÎÊÌâ
-            # ÊÂÊµÖ¤Ã÷ ord ±È has_key Òª½ÚÊ¡ÐÔÄÜ£¬ ord ·ÅÇ°ÃæÏÈ×öÅÐ¶Ï
+        # å­—ç¬¦æ£€æŸ¥
+        for c in value.lower() + ' ': # åŠ ä¸ªç©ºæ ¼å¤šä¸€æ¬¡å¾ªçŽ¯ ä¿®æ­£å°¾éƒ¨å­—ç¬¦ä¸¢å¤±é—®é¢˜
+            # äº‹å®žè¯æ˜Ž ord æ¯” has_key è¦èŠ‚çœæ€§èƒ½ï¼Œ ord æ”¾å‰é¢å…ˆåšåˆ¤æ–­
             i = ord(c)
             if (i >= 48 and i <= 57) or (i >= 97 and i <= 122): # 48-57[0-9]   97-122[a-z]
                 tASCII += c
                 continue
-            
+
             tASCII and pinyin.append(tASCII)
             tASCII = ''
-            
+
             if self.table.has_key(c):
                 pinyin.append(self.table[c])
-                continue
-        
+
         return pinyin
 
 
 if __name__ == '__main__':
     import time
-    t = u'Prep ÄãºÃ    ÖÐ ¹ú£¡I Love China! 2010Äê8ÔÂ !@    #   $%^   &* ()_+   Append'
+    t = u'Prep ä½ å¥½    ä¸­ å›½ï¼I Love China! 2010å¹´8æœˆ !@    #   $%^   &* ()_+   Append'
     s = time.time()
     p = Hanzi2Pinyin() # you class
     print 'init:', time.time() - s
