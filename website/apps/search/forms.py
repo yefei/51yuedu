@@ -63,7 +63,7 @@ class BookSearchForm(SearchForm):
     
     def query(self):
         return self.search.query('@title %s' % self.cleaned_data['word']).\
-                order_by('-@weight').\
+                order_by('@weight').\
                 set_options(passages=True, mode='SPH_MATCH_EXTENDED2').\
                 select_related('subarea','category')
 
@@ -75,7 +75,7 @@ class AuthorSearchForm(SearchForm):
     
     def query(self):
         return self.search.query('@author_name %s' % self.cleaned_data['word']).\
-                order_by('-@weight').\
+                order_by('@weight').\
                 set_options(passages=True, mode='SPH_MATCH_EXTENDED2').\
                 select_related('subarea','category')
 
