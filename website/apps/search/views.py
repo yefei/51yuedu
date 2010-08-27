@@ -5,13 +5,13 @@
 from django.shortcuts import render
 from django.http import Http404
 from django.contrib.sphinxsearch.models import SearchError
-from website.apps.search.forms import SearchForm, BookSearchForm
+from website.apps.search.forms import SearchForm, BookSearchForm, AuthorSearchForm
 from website.utils.pagination import TemplatePaginator
 
 
 APP_FORMS = {
     'book': BookSearchForm,
-    'author': BookSearchForm,
+    'author': AuthorSearchForm,
 }
 
 APP_NAMES = {

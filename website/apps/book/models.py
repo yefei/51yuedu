@@ -65,8 +65,7 @@ class Book(models.Model):
                                        db_index=True, editable=False)
     is_complete = models.BooleanField(u'已完本', default=False, db_index=True)
 
-    search_title    = SphinxSearch(index='title')
-    search_author   = SphinxSearch(index='author_name')
+    search      = SphinxSearch()
 
     class Meta:
         #ordering = ('-id',)

@@ -1,0 +1,125 @@
+{% extends "book/base.html" %}
+{% import '_macro/site.html' as site with context %}
+{% from '_macro/pagination.html' import paginate %}
+
+
+{% block main %}
+
+		{% call site.menu('book') %}
+			{% object website.apps.book.models.Subarea as Subarea %}
+			<ul class="w2">
+				<li><a href="/book/">全部</a></li>
+			{% cache 86400 'book_show_site_menu' %}
+			{% for s in Subarea.objects.all() -%}
+				<li><a href="{{s.get_absolute_url()}}">{{s.label}}</a></li>
+			{% endfor %}
+			{% endcache %}
+			</ul>
+		{% endcall %}
+
+	<div class="breadcrumbs">
+		当前位置：<a href="/">我要阅读网</a> &raquo;
+			搜索
+	</div>
+	<div id="ads_book_search_top"></div>
+	
+	{%- set escaped_word = data.word|escape -%}
+	
+	<div class="FL" style="width:770px;">
+	
+		{% if results_error %}
+			<div class="searchNoResults" style="color:red;">搜索出错：{{results_error}}</div>
+		{% endif %}
+		{% if form.errors %}
+			<div class="searchNoResults" style="color:red;">输入出错：
+			<ol>{% for f,e in form.errors.items() %}<li>{{e}}</li>{% endfor %}</ol>
+			</div>
+		{% endif %}
+	
+		{% if not results and form.is_valid() -%}
+				<div class="searchNoResults">
+					<p>抱歉，没有找到与“<span style="color:red">{{escaped_word}}</span>”相关的数据。 </p>
+					<br/>
+					<dl>
+						<dt>建议您：</dt>
+						<dd>看看输入的文字是否有误</dd>
+						<dd>去掉可能不必要的字词，如“的”、“什么”等</dd>
+					</dl>
+				</div>
+	{% else %}
+	
+		<div class="bookIndexTip">
+			搜索 “<span style="color:red">{{escaped_word}}</span>” 共找到相关结果 <b>{{results.count()|intcomma}}</b> 条，
+			用时 {{results._sphinx.time}} 秒
+		</div>
+		<div class="bookList searchResultsList">
+			<table cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<th width="120">类别</th>
+					<th>小说名</th>
+					<th width="90">作者</th>
+					<th width="60" style="text-align:right;">字数</th>
+					<th width="40" style="text-align:center;">评分</th>
+					<th width="70" style="text-align:right;">最后更新</th>
+				</tr>
+				{% for b in results_list.object_list -%}
+				<tr>
+					<td class="category"><a href="/book/s{{b.subarea.id}}/">{{b.subarea.label}}</a> / <a href="/book/c{{b.category.id}}/">{{b.category.label}}</a></td>
+					<td class="title"><a href="{{b.get_absolute_url()}}" target="_blank">{{b.sphinx.passages.title}}</a></td>
+					<td class="author">
+					{%- if b.author_id -%}
+						<a href="/book/author/{{b.author_id}}/" target="_blank">{{b.sphinx.passages.author_name}}</a>
+					{%- else -%}
+						{{b.sphinx.passages.author_name}}
+					{%- endif -%}
+					</td>
+					<td class="length">{{b.length|intcomma}}</td>
+					<td class="rate" style="color:{%if b.rate_average>0%}red{%elif b.rate_average<0%}green{%else%}#ddd{%endif%}">{{b.rate_average}}</td>
+					<td class="updated_at">{{b.updated_at|timeordate}}</td>
+				</tr>
+				{%- endfor %}
+			</table>
+		</div>
+		
+		<div class="pagination">{{paginate(results_list)}}</div>
+		
+	{% endif %}
+		
+	</div>
+
+
+	<div class="FR" style="width:200px;">
+		<div class="subBlock">
+			<h4>推荐作品</h4>
+			<ul>
+				{% cache 3600 'books_subBlock_rec' %}
+				{% object website.apps.book.models.Book as Book %}
+				{% for b in Book.objects.filter(rate_score__gt=0).order_by('-rate_score')[:12] %}
+					<li><a href="{{b.get_absolute_url()}}" target="_blank">{{b.title}}</a></li>
+				{% else %}
+					<li>-- 暂无 --</li>
+				{% endfor %}
+				{% endcache %}
+			</ul>
+		</div>
+	
+		<div class="subBlock MT10">
+			<h4>人气作品</h4>
+			<ul>
+				{% cache 3600 'books_subBlock_rank' %}
+				{% object website.apps.book.models.Book as Book %}
+				{% for b in Book.objects.filter(views__gt=10).order_by('-views')[:12] %}
+					<li><a href="{{b.get_absolute_url()}}" target="_blank">{{b.title}}</a></li>
+				{% else %}
+					<li>-- 暂无 --</li>
+				{% endfor %}
+				{% endcache %}
+			</ul>
+		</div>
+		<div id="ads_book_search_right"></div>
+	</div>
+	
+	<div class="clear"></div>
+
+
+{% endblock %}
