@@ -62,8 +62,8 @@ class BookSearchForm(SearchForm):
         self.search = Book.search
     
     def query(self):
-        return self.search.query(self.cleaned_data['word']).\
-                set_options(index='title', passages=True, mode=self.cleaned_data['mode']).\
+        return self.search.query('@title %s' % self.cleaned_data['word']).\
+                set_options(index='title', passages=True, mode='SPH_MATCH_EXTENDED2').\
                 select_related('subarea','category')
 
 
@@ -73,8 +73,8 @@ class AuthorSearchForm(SearchForm):
         self.search = Book.search
     
     def query(self):
-        return self.search.query(self.cleaned_data['word']).\
-                set_options(index='author_name', passages=True, mode=self.cleaned_data['mode']).\
+        return self.search.query('@author_name %s' % self.cleaned_data['word']).\
+                set_options(index='author_name', passages=True, mode='SPH_MATCH_EXTENDED2').\
                 select_related('subarea','category')
 
 
