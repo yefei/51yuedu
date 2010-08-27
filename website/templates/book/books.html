@@ -50,7 +50,13 @@
 				<tr>
 					<td class="category"><a href="/book/c{{b.category_id}}/">{{categories[b.category_id].label}}</a></td>
 					<td class="title"><a href="{{b.get_absolute_url()}}" target="_blank">{{b.title}}</a>{%if b.is_complete%} 完本{%endif%}</td>
-					<td class="author"><a href="/search/book/{{b.author_name|urlencode}}/" target="_blank">{{b.author_name}}</a></td>
+					<td class="author">
+					{%- if b.author_id -%}
+						<a href="/book/author/{{b.author_id}}/" target="_blank">{{b.author_name}}</a>
+					{%- else -%}
+						{{b.author_name}}
+					{%- endif -%}
+					</td>
 					<td class="length">{{b.length|intcomma}}</td>
 					<td class="rate" style="color:{%if b.rate_average>0%}red{%elif b.rate_average<0%}green{%else%}#ddd{%endif%}">{{b.rate_average}}</td>
 					<td class="updated_at">{{b.updated_at|timeordate}}</td>
@@ -70,7 +76,7 @@
 			<h4>推荐作品</h4>
 			<ul>
 				{% cache 3600 'books_subBlock_rec_subarea' subarea.id %}
-				{% for b in subarea.book_set.filter(rate_score__gt=0).order_by('-rate_score')[:12] %}
+				{% for b in subarea.book_set.filter(rate_score__gt=0).order_by('-rate_score')[:30] %}
 					<li><a href="{{b.get_absolute_url()}}" target="_blank">{{categories[b.category_id].label}} - {{b.title}}</a></li>
 				{% else %}
 					<li>-- 暂无 --</li>
@@ -84,7 +90,7 @@
 			<ul>
 			{%if category%}
 				{% cache 3600 'books_subBlock_rank_category' category.id %}
-				{% for b in category.book_set.filter(views__gt=10).order_by('-views')[:12] %}
+				{% for b in category.book_set.filter(views__gt=10).order_by('-views')[:30] %}
 					<li><a href="{{b.get_absolute_url()}}" target="_blank">{{b.title}}</a></li>
 				{% else %}
 					<li>-- 暂无 --</li>
@@ -92,7 +98,7 @@
 				{% endcache %}
 			{% else %}
 				{% cache 3600 'books_subBlock_rank_subarea' subarea.id %}
-				{% for b in subarea.book_set.filter(views__gt=10).order_by('-views')[:12] %}
+				{% for b in subarea.book_set.filter(views__gt=10).order_by('-views')[:30] %}
 					<li><a href="{{b.get_absolute_url()}}" target="_blank">{{categories[b.category_id].label}} - {{b.title}}</a></li>
 				{% else %}
 					<li>-- 暂无 --</li>

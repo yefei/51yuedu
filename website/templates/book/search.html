@@ -66,7 +66,13 @@
 				<tr>
 					<td class="category"><a href="/book/s{{b.subarea.id}}/">{{b.subarea.label}}</a> / <a href="/book/c{{b.category.id}}/">{{b.category.label}}</a></td>
 					<td class="title"><a href="{{b.get_absolute_url()}}" target="_blank">{{b.sphinx.passages.title}}</a></td>
-					<td class="author"><a href="/search/book/{{b.author_name|urlencode}}/" target="_blank">{{b.sphinx.passages.author_name}}</a></td>
+					<td class="author">
+					{%- if b.author_id -%}
+						<a href="/book/author/{{b.author_id}}/" target="_blank">{{b.sphinx.passages.author_name}}</a>
+					{%- else -%}
+						{{b.sphinx.passages.author_name}}
+					{%- endif -%}
+					</td>
 					<td class="length">{{b.length|intcomma}}</td>
 					<td class="rate" style="color:{%if b.rate_average>0%}red{%elif b.rate_average<0%}green{%else%}#ddd{%endif%}">{{b.rate_average}}</td>
 					<td class="updated_at">{{b.updated_at|timeordate}}</td>

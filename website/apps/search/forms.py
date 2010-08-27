@@ -59,12 +59,19 @@ class UserFilterForm(SearchForm):
 class BookSearchForm(SearchForm):
     def __init__(self, *args, **kwargs):
         super(BookSearchForm, self).__init__(*args, **kwargs)
-        self.search = Book.search
+        self.search = Book.search_title
     
     def query(self):
         return super(BookSearchForm, self).query().select_related('subarea','category')
 
 
+class AuthorSearchForm(SearchForm):
+    def __init__(self, *args, **kwargs):
+        super(AuthorSearchForm, self).__init__(*args, **kwargs)
+        self.search = Book.search_author
+    
+    def query(self):
+        return super(AuthorSearchForm, self).query().select_related('subarea','category')
 
 
 

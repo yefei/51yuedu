@@ -4,8 +4,8 @@ var Web = {};
 
 Web.location_uri = encodeURIComponent(location.pathname + location.search + location.hash);
 
-//Web.site_search_items = {bookname:'书名', author:'作者', chapter:'章节'};
-
+Web.site_search_items = {book:'书名', author:'作者'};
+Web.site_search_default = '书名';
 
 Web.copyToClipBoard = function(maintext) {
 	if (window.clipboardData){
@@ -336,16 +336,16 @@ Web.init = function (){
 		});
 	}
 	// 搜索
-	/*
 	var s = $('#site_search_form');
 	if (s.is(':visible')) {
 		var id = 'id' + (+new Date);
-		$('input:text', s).css('border-left','0').before('<input type="button" value="全站" id="'+id+'" class="siteHeaderSearch_item" />');
+		$('input:text', s).css('border-left','0')
+			.before('<input type="button" value="'+Web.site_search_default+'" id="'+id+'" class="siteHeaderSearch_item" />');
 		var h = '';
 		$.each(Web.site_search_items, function(k,v){
 			h += '<li><a href="/search/'+k+'/">'+v+'</a></li>';
 		})
-		s.prepend('<div id="siteHeaderSearch_item"><ul><li><a href="/search/">全站</a></li>'+h+'<ul></div>');
+		s.prepend('<div id="siteHeaderSearch_item"><ul>'+h+'<ul></div>');
 		$('#'+id).click(function(){
 			$('#siteHeaderSearch_item').show('blind');
 			return false;
@@ -360,7 +360,6 @@ Web.init = function (){
 			if ($('#siteHeaderSearch_item').is(':visible')) $('#siteHeaderSearch_item').hide();
 		});
 	}
-	*/
 };
 
 $(document).ready(Web.init);

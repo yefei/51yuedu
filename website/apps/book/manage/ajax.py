@@ -12,7 +12,7 @@ from website.apps.account.auth import api_admin_required
 def search_book(request, response):
     title = param(request, 'title', unicode)
     if title:
-        s = Book.search.query(u'@title %s' % title).set_options(passages=True, mode='SPH_MATCH_EXTENDED2').all()[0:10]
+        s = Book.search_title.query(title).set_options(passages=True, mode='SPH_MATCH_ALL').all()[0:10]
         if s:
             return [{'id':v.id, 'title':v.sphinx['passages']['title'], 'author':v.author} for v in s]
 

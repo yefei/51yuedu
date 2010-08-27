@@ -41,7 +41,13 @@
 			<div class="bookShowTitle">
 				<h1>{{book.title}}</h1>
 				<div class="bookShowTitleOption">
-					<span>作者：<a href="/search/book/{{book.author_name|urlencode}}/" target="_blank">{{book.author_name}}</a></span>
+					<span>作者：
+					{%- if book.author_id -%}
+						<a href="/book/author/{{book.author_id}}/" target="_blank">{{book.author_name}}</a>
+					{%- else -%}
+						{{book.author_name}}
+					{%- endif -%}
+					</span>
 					<span>更新时间：{{book.updated_at|localize}}</span>
 					字数：<b>{{book.length|intcomma}}</b>
 					<br/>

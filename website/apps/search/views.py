@@ -2,8 +2,7 @@
 # Created on 2010-3-17
 # @author: Yefe
 # $Id$
-from urllib import unquote_plus
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import Http404
 from django.contrib.sphinxsearch.models import SearchError
 from website.apps.search.forms import SearchForm, BookSearchForm
@@ -12,10 +11,12 @@ from website.utils.pagination import TemplatePaginator
 
 APP_FORMS = {
     'book': BookSearchForm,
+    'author': BookSearchForm,
 }
 
 APP_NAMES = {
-    'book': u'小说',
+    'book': u'书名',
+    'author': u'作者',
 }
 
 @render
