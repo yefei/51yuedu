@@ -7,7 +7,7 @@ from django import forms
 from django.db.models import F
 from django.contrib import admin
 from django.core.urlresolvers import reverse
-from website.apps.book.models import Category, Subarea, Book, Chapter
+from website.apps.book.models import Category, Subarea, Book, Chapter, Review
 
 
 class CategoryInline(admin.TabularInline):
@@ -71,6 +71,11 @@ class ChapterAdmin(admin.ModelAdmin):
         obj.save()
 
 
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('book', 'user', 'content', 'created_at')
+
+
 admin.site.register(Subarea, SubareaAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Chapter, ChapterAdmin)
+admin.site.register(Review, ReviewAdmin)
