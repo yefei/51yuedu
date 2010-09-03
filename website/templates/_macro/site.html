@@ -16,8 +16,23 @@
 		<div class="siteMenu_main">
 			<ul>
 				<li{%if selected=='index'%} class="s"{%endif%}><a href="/">首页</a></li>
+				
 				<li class="sp">|</li>
-				<li{%if selected=='book'%} class="s"{%endif%}><a href="/book/">小说</a></li>
+				<li{%if selected=='a117'%} class="s"{%endif%}><a href="/book/a117/">言情</a></li>
+				<li class="sp">|</li>
+				<li{%if selected=='a118'%} class="s"{%endif%}><a href="/book/a118/">武侠</a></li>
+				<li class="sp">|</li>
+				<li{%if selected=='a119'%} class="s"{%endif%}><a href="/book/a119/">科幻</a></li>
+				<li class="sp">|</li>
+				<li{%if selected=='a120'%} class="s"{%endif%}><a href="/book/a120/">现代</a></li>
+				<li class="sp">|</li>
+				<li{%if selected=='a121'%} class="s"{%endif%}><a href="/book/a121/">国外</a></li>
+				<li class="sp">|</li>
+				<li{%if selected=='a122'%} class="s"{%endif%}><a href="/book/a122/">故事</a></li>
+				
+				<li class="sp">|</li>
+				<li{%if selected=='book'%} class="s"{%endif%}><a href="/book/">小说库</a></li>
+				
 				<li class="account">
 				{% if request.user.is_authenticated() -%}
 					用户：{{request.user.username}} <a href="/my/">进入会员中心</a>

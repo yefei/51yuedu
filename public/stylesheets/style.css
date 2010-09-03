@@ -236,3 +236,18 @@ h5.t,h4.t {border-bottom:1px solid #CCCACA;padding:1px 0;}
 .indexCategory dd {float:left;}
 .indexCategory dd.clear {float:none;clear:left;height:0;line-height:0;border-top:1px solid #F1E3C8;}
 
+
+.authorsPinyinIndex {border:1px solid #B6C7DB;height:25px;line-height:25px;background:#F9F9F9;}
+.authorsPinyinIndex span {display:block;float:left;background:#D2E5FC;padding:0 10px;}
+.authorsPinyinIndex ul {float:left;}
+.authorsPinyinIndex li {float:left;margin-left:8px;}
+.authorsPinyinIndex li a {padding:0 3px;font-weight:bold;}
+.authorsList {margin-top:15px;}
+.authorsList h4 {height:28px;line-height:28px;background:url(/public/images/bg/authorindex.jpg) no-repeat left;}
+.authorsList h4 a {margin-left:22px;}
+.authorsList a {white-space:nowrap;}
+.authorsList a.hot {color:red;}
+.authorsList li {float:left;width:120px;overflow:hidden;}
+
+
+

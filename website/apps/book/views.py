@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils.hashcompat import sha_constructor
 from django.conf import settings
 from datetime import datetime
-from website.apps.book.models import Subarea, Category, Book, Chapter
+from website.apps.book.models import Subarea, Category, Book, Chapter, Author
 from website.utils.pagination import TemplateRESTPaginator, TemplatePaginator
 from website.apps.account.auth import login_required
 from website.apps.book.forms import ReviewForm
@@ -20,7 +20,27 @@ def index(request, page=1):
 
 @render
 def authors(request, category_id):
+    category_id = int(category_id)
+    if not category_id in (117,118,119,120,121,122):
+        return HttpResponseForbidden()
+    category = get_object_or_404(Category, id=category_id)
+    
+    def authors():
+        lists = {}
+        for a in category.author_set.all():
+            p = a.get_pyindex_display()
+            if not lists.has_key(p):
+                lists[p] = []
+            lists[p].append(a)
+        return sorted(lists.items(), key=lambda d:d[0])
     return 'book/authors.html', locals()
+
+@render
+def author(request, id, slug=None):
+    author = get_object_or_404(Author.objects.select_related('category'), id=id)
+    category = author.category
+    books = author.book_set.all()
+    return 'book/author_books.html', locals()
 
 @render
 def books(request, subarea_id=None, category_id=None, page=1):
@@ -43,22 +63,6 @@ def books(request, subarea_id=None, category_id=None, page=1):
         categories[c['id']] = c
     books = TemplateRESTPaginator(books, r, r_args, page=page, per_page=100)
     return 'book/books.html', locals()
-
-"""
-def number2chinese(number):
-    units = u'  十百千万十百千亿十百千万兆十百千万亿' # 单位数组 
-    numeric = u'零一二三四五六七八九' # 中文数字数组
-    s = u''
-    number = str(number)
-    for i in range(0, len(number)):
-        s += numeric[int(number[i])]
-        if units[len(number)-i] != u' ':
-            s += units[len(number)-i]
-    s = s.rstrip(u'零')
-    if s[0:2] == u'一十':
-        s = s[1:]
-    return s
-"""
 
 @render
 def show(request, id, slug=None):

@@ -7,6 +7,7 @@ from website.apps.book import views
 
 urlpatterns = patterns('',
     url(r'^$',                  views.index,      name='index'),
+    url(r'^a(?P<category_id>\d+)/$',     views.authors,      name='authors_category'),
     url(r'^page-(?P<page>\d+)/$',                  views.index,      name='index_page'),
     url(r'^s(?P<subarea_id>\d+)/$',     views.books,      name='books_subarea'),
     url(r'^c(?P<category_id>\d+)/$',     views.books,      name='books_category'),
@@ -22,6 +23,9 @@ urlpatterns = patterns('',
     url(r'^chapter/(?P<id>\d+)/$',     views.chapter,      name='chapter'),
     url(r'^read_point/$',     views.read_point,      name='read_point'),
     url(r'^favorite/$',     views.favorite,      name='favorite'),
+    
+    url(r'^author/(?P<id>\d+)/$',     views.author,      name='author'),
+    url(r'^author/(?P<id>\d+)-(?P<slug>.*?)\.html$',     views.author,      name='slug_author'),
     
     (r'^manage/',     include('website.apps.book.manage.urls',     'manage')),
 )

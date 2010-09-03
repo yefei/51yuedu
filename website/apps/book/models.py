@@ -47,12 +47,16 @@ class Author(models.Model):
     name        = models.CharField(u'姓名', max_length=32)
     pyindex     = models.SmallIntegerField(u'读音索引', choices=zip(range(0,28),tuple('-ABCDEFGHIJKLMNOPQRSTUVWXYZ*')), default=0)
     is_hot      = models.BooleanField(u'热门', default=False, db_index=True)
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('book:slug_author', (self.id, '-'.join(pinyin.convert(self.name))))
 
 
 class Book(models.Model):
     subarea     = models.ForeignKey(Subarea, related_name='book_set', editable=False)
     category    = models.ForeignKey(Category, related_name='book_set')
-    author      = models.ForeignKey(Author, related_name='author_set')
+    author      = models.ForeignKey(Author, related_name='book_set')
     author_name = models.CharField(u'作者', max_length=32)
     title       = models.CharField(u'标题', max_length=255)
     series      = models.CharField(u'系列', max_length=255, blank=True)
