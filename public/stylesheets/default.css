@@ -10,8 +10,8 @@ input {padding-left:3px;padding-right:3px;}
 input,textarea,select{font-size:14px;line-height:120%}
 textarea {border:1px solid #ccc;padding:3px;}
 a{cursor:pointer}
-a:link {color:#25578A; text-decoration:none; }
-a:visited {color:#666699; text-decoration:none; }
+a:link {color:#25578A; text-decoration:underline; }
+a:visited {color:#666699; text-decoration:underline; }
 a:hover {color:#C00000; text-decoration:underline; }
 a:active {color:#C00000; text-decoration:underline; }
 a img {border-width:0;}
