@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uwsgi>
+  <pidfile>/var/run/uwsgi-51yuedu.pid</pidfile>
+  <disable-logging/>
+  <socket>/tmp/uwsgi-51yuedu.sock</socket>
+  <master/>
+  <enable-threads/>
+  <processes>8</processes>
+  <uid>www</uid>
+  <env>DJANGO_SETTINGS_MODULE=website.settings</env>
+  <module>django.core.handlers.wsgi:WSGIHandler()</module>
+  <daemonize>/tmp/uwsgi-51yuedu.log</daemonize>
+</uwsgi>
