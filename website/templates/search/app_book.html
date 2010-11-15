@@ -36,7 +36,7 @@
 			</div>
 		{% endif %}
 	
-		{% if not results or form.is_valid() -%}
+		{% if !results -%}
 				<div class="searchNoResults">
 					<p>抱歉，没有找到与“<span style="color:red">{{escaped_word}}</span>”相关的数据。 </p>
 					<br/>
