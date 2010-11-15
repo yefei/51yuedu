@@ -38,6 +38,7 @@ def app(request, applabel, word=None):
         raise Http404()
         #return redirect('search:index')
     data = request.REQUEST.copy()
+    results = None
     if word is not None and len(word):
         #word = unquote_plus(str(word)).decode('utf-8')
         data.dicts = list(data.dicts)
